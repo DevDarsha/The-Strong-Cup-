@@ -1,7 +1,9 @@
 import { Star, ShoppingCart, Heart, Share2, Plus, Minus, CheckCircle, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
+import { useCart } from '../context/CartContext';
 
 interface ProductDetailProps {
   product: Product;
@@ -23,6 +25,8 @@ export default function ProductDetail({
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [showSticky, setShowSticky] = useState(false);
+  const { cartCount } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,17 +46,30 @@ export default function ProductDetail({
   ];
 
   return (
-    <div className="pt-24 pb-20 bg-tea-cream min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        {/* Back Button */}
+    <div className="pb-20 bg-tea-cream min-h-screen">
+      {/* Minimal Top Bar */}
+      <div className="sticky top-0 z-50 bg-tea-cream/80 backdrop-blur-md border-b border-tea-brown/5 px-4 md:px-8 py-4 flex justify-between items-center">
         <button 
           onClick={onBack}
-          className="flex items-center text-tea-brown/60 hover:text-tea-gold transition-colors mb-8 group"
+          className="flex items-center text-tea-brown hover:text-tea-gold transition-colors font-medium"
         >
-          <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Shop
+          <ArrowLeft size={20} className="mr-2" />
+          Back
         </button>
+        <button 
+          onClick={() => navigate('/cart')}
+          className="text-tea-brown hover:text-tea-gold transition-colors relative"
+        >
+          <ShoppingCart size={22} />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-tea-gold text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-24">
           {/* Image Gallery */}
           <div className="space-y-6">
@@ -102,14 +119,14 @@ export default function ProductDetail({
                 <span className="text-tea-brown/50 font-medium border-l border-tea-brown/20 pl-4">120+ Customer Reviews</span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl font-serif font-bold text-tea-brown mb-4 leading-tight">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-tea-brown mb-4 leading-tight">
                 {product.name}
               </h1>
               
               <div className="flex items-center space-x-4">
-                <span className="text-3xl font-bold text-tea-brown">₹{product.price}</span>
-                <span className="text-xl text-tea-brown/40 line-through">₹{product.originalPrice}</span>
-                <span className="bg-tea-green/10 text-tea-green text-xs font-bold px-3 py-1 rounded-full border border-tea-green/20">Save ₹{product.originalPrice - product.price}</span>
+                <span className="text-2xl font-bold text-tea-brown">₹{product.price}</span>
+                <span className="text-lg text-tea-brown/40 line-through">₹{product.originalPrice}</span>
+                <span className="bg-tea-green/10 text-tea-green text-[10px] font-bold px-2 py-1 rounded-full border border-tea-green/20">Save ₹{product.originalPrice - product.price}</span>
               </div>
               
               {/* Urgency Element */}
@@ -119,79 +136,79 @@ export default function ProductDetail({
               </div>
             </div>
 
-            <p className="text-tea-brown/70 leading-relaxed text-lg">
+            <p className="text-tea-brown/70 leading-relaxed text-base">
               {product.description}
             </p>
 
             <div className="space-y-4">
-              <h3 className="font-serif font-bold text-tea-brown text-xl">Key Features:</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <h3 className="font-serif font-bold text-tea-brown text-base">Key Features:</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {product.features.map((feature, i) => (
-                  <div key={i} className="flex items-center space-x-3 bg-white p-3 rounded-xl border border-tea-brown/5 shadow-sm">
-                    <CheckCircle size={18} className="text-tea-green flex-shrink-0" />
-                    <span className="text-sm font-medium text-tea-brown/80">{feature}</span>
+                  <div key={i} className="flex items-center space-x-3 bg-white p-2 rounded-xl border border-tea-brown/5 shadow-sm">
+                    <CheckCircle size={16} className="text-tea-green flex-shrink-0" />
+                    <span className="text-xs font-medium text-tea-brown/80">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-tea-brown/10 space-y-6">
-              <div className="flex flex-wrap items-center gap-6">
-                <div className="flex items-center bg-white rounded-2xl p-2 border-2 border-tea-brown/10 shadow-sm">
+            <div className="pt-6 border-t border-tea-brown/10 space-y-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center bg-white rounded-xl p-1 border-2 border-tea-brown/10 shadow-sm">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-tea-cream rounded-xl transition-colors text-tea-brown"
+                    className="w-8 h-8 flex items-center justify-center hover:bg-tea-cream rounded-lg transition-colors text-tea-brown"
                   >
-                    <Minus size={20} />
+                    <Minus size={16} />
                   </button>
-                  <span className="w-12 text-center font-bold text-xl text-tea-brown">{quantity}</span>
+                  <span className="w-10 text-center font-bold text-lg text-tea-brown">{quantity}</span>
                   <button 
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 flex items-center justify-center hover:bg-tea-cream rounded-xl transition-colors text-tea-brown"
+                    className="w-8 h-8 flex items-center justify-center hover:bg-tea-cream rounded-lg transition-colors text-tea-brown"
                   >
-                    <Plus size={20} />
+                    <Plus size={16} />
                   </button>
                 </div>
 
-                <div className="flex space-x-4 flex-1 min-w-[200px]">
+                <div className="flex space-x-3 flex-1 min-w-[200px]">
                   <button 
                     onClick={() => onAddToCart(product, quantity)}
-                    className="flex-1 bg-tea-brown text-tea-cream py-4 rounded-2xl font-bold flex items-center justify-center hover:bg-tea-gold transition-all shadow-xl hover:shadow-tea-gold/20 active:scale-95 group"
+                    className="flex-1 bg-tea-brown text-tea-cream py-2.5 rounded-xl font-medium text-sm flex items-center justify-center hover:bg-tea-gold transition-all shadow-xl hover:shadow-tea-gold/20 active:scale-95 group"
                   >
-                    <ShoppingCart size={20} className="mr-2 group-hover:scale-110 transition-transform" />
+                    <ShoppingCart size={18} className="mr-2 group-hover:scale-110 transition-transform" />
                     Add to Cart
                   </button>
-                  <button className="p-4 rounded-2xl border-2 border-tea-brown text-tea-brown hover:bg-tea-brown hover:text-tea-cream transition-all shadow-sm active:scale-95">
-                    <Heart size={20} />
+                  <button className="p-2.5 rounded-xl border-2 border-tea-brown text-tea-brown hover:bg-tea-brown hover:text-tea-cream transition-all shadow-sm active:scale-95">
+                    <Heart size={18} />
                   </button>
-                  <button className="p-4 rounded-2xl border-2 border-tea-brown text-tea-brown hover:bg-tea-brown hover:text-tea-cream transition-all shadow-sm active:scale-95">
-                    <Share2 size={20} />
+                  <button className="p-2.5 rounded-xl border-2 border-tea-brown text-tea-brown hover:bg-tea-brown hover:text-tea-cream transition-all shadow-sm active:scale-95">
+                    <Share2 size={18} />
                   </button>
                 </div>
               </div>
 
               <button 
                 onClick={() => onBuyNow(product, quantity)}
-                className="w-full bg-tea-gold text-tea-brown py-4 rounded-2xl font-bold flex items-center justify-center hover:bg-white transition-all shadow-xl hover:shadow-white/20 active:scale-95"
+                className="w-full bg-tea-gold text-tea-brown py-3 rounded-xl font-medium text-base flex items-center justify-center hover:bg-tea-brown hover:text-tea-cream transition-all shadow-xl hover:shadow-tea-brown/20 active:scale-95"
               >
                 Buy It Now
               </button>
             </div>
 
             {/* Trust Badges */}
-            <div className="flex items-center justify-between p-6 bg-tea-gold/10 rounded-3xl border border-tea-gold/20">
+            <div className="flex items-center justify-between p-6 bg-tea-gold/10 rounded-2xl border border-tea-gold/20 mt-8">
               <div className="text-center">
-                <p className="text-xs font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Shipping</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Shipping</p>
                 <p className="text-sm font-bold text-tea-brown">Free Delivery</p>
               </div>
               <div className="w-px h-8 bg-tea-gold/20" />
               <div className="text-center">
-                <p className="text-xs font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Quality</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Quality</p>
                 <p className="text-sm font-bold text-tea-brown">100% Organic</p>
               </div>
               <div className="w-px h-8 bg-tea-gold/20" />
               <div className="text-center">
-                <p className="text-xs font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Origin</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-tea-brown/40 mb-1">Origin</p>
                 <p className="text-sm font-bold text-tea-brown">Pure Assam</p>
               </div>
             </div>
@@ -199,27 +216,27 @@ export default function ProductDetail({
         </div>
 
         {/* Related Products Section - 2x2 Grid Layout */}
-        <div className="mt-24">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-tea-brown">
+        <div className="mt-20">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-serif font-bold text-tea-brown">
               Related <span className="text-tea-gold italic">Products</span>
             </h2>
           </div>
           
-          <div className="grid grid-cols-1 gap-4 md:gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {relatedProducts.slice(0, 4).map(p => (
-              <div key={p.id} className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-tea-brown/5 relative">
+              <div key={p.id} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-tea-brown/5 relative">
                 <div 
-                  className="relative h-48 md:h-64 overflow-hidden cursor-pointer"
+                  className="relative h-48 md:h-56 overflow-hidden cursor-pointer"
                   onClick={() => onProductClick(p)}
                 >
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
                   <div className="absolute top-3 left-3 bg-tea-gold text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md">{p.discount}</div>
                 </div>
-                <div className="p-4 md:p-6">
-                  <h3 className="text-lg font-serif font-bold text-tea-brown mb-2 line-clamp-1 cursor-pointer" onClick={() => onProductClick(p)}>{p.name}</h3>
+                <div className="p-4">
+                  <h3 className="text-base font-serif font-bold text-tea-brown mb-2 line-clamp-1 cursor-pointer" onClick={() => onProductClick(p)}>{p.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-tea-brown">₹{p.price}</span>
+                    <span className="text-lg font-bold text-tea-brown">₹{p.price}</span>
                     <button 
                       onClick={() => onAddToCart(p, 1)}
                       className="bg-tea-brown text-tea-cream p-2 rounded-lg hover:bg-tea-gold transition-all"

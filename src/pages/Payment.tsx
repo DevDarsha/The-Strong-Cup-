@@ -55,46 +55,46 @@ const Payment: React.FC = () => {
 
         <button 
           onClick={() => navigate(-1)}
-          className="flex items-center text-tea-brown hover:text-tea-gold transition-colors mb-8 font-bold"
+          className="flex items-center text-tea-brown hover:text-tea-gold transition-colors mb-6 font-bold text-sm"
         >
-          <ArrowLeft size={20} className="mr-2" /> Back
+          <ArrowLeft size={18} className="mr-2" /> Back
         </button>
-        <h2 className="text-4xl font-serif font-bold text-tea-brown mb-12">Payment <span className="text-tea-gold italic">Method</span></h2>
+        <h2 className="text-3xl font-serif font-bold text-tea-brown mb-10">Payment <span className="text-tea-gold italic">Method</span></h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           <button 
             onClick={() => setPaymentMethod('card')}
-            className={`p-8 rounded-[2rem] border-2 transition-all text-left group ${paymentMethod === 'card' ? 'border-tea-gold bg-white shadow-xl' : 'border-tea-brown/5 bg-tea-cream/30 hover:border-tea-gold/30'}`}
+            className={`p-6 rounded-3xl border-2 transition-all text-left group ${paymentMethod === 'card' ? 'border-tea-gold bg-white shadow-xl' : 'border-tea-brown/5 bg-tea-cream/30 hover:border-tea-gold/30'}`}
           >
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${paymentMethod === 'card' ? 'bg-tea-gold text-white' : 'bg-white text-tea-brown/40'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors ${paymentMethod === 'card' ? 'bg-tea-gold text-white' : 'bg-white text-tea-brown/40'}`}>
               <CreditCard size={24} />
             </div>
-            <h3 className="text-xl font-bold text-tea-brown mb-2">Credit / Debit Card</h3>
-            <p className="text-tea-brown/40 text-sm">Pay securely with your Visa, Mastercard, or AMEX.</p>
+            <h3 className="text-lg font-bold text-tea-brown mb-2">Credit / Debit Card</h3>
+            <p className="text-tea-brown/40 text-xs">Pay securely with your Visa, Mastercard, or AMEX.</p>
           </button>
 
           <button 
             onClick={() => setPaymentMethod('cod')}
-            className={`p-8 rounded-[2rem] border-2 transition-all text-left group ${paymentMethod === 'cod' ? 'border-tea-gold bg-white shadow-xl' : 'border-tea-brown/5 bg-tea-cream/30 hover:border-tea-gold/30'}`}
+            className={`p-6 rounded-3xl border-2 transition-all text-left group ${paymentMethod === 'cod' ? 'border-tea-gold bg-white shadow-xl' : 'border-tea-brown/5 bg-tea-cream/30 hover:border-tea-gold/30'}`}
           >
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-colors ${paymentMethod === 'cod' ? 'bg-tea-gold text-white' : 'bg-white text-tea-brown/40'}`}>
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors ${paymentMethod === 'cod' ? 'bg-tea-gold text-white' : 'bg-white text-tea-brown/40'}`}>
               <CheckCircle2 size={24} />
             </div>
-            <h3 className="text-xl font-bold text-tea-brown mb-2">Cash on Delivery</h3>
-            <p className="text-tea-brown/40 text-sm">Pay with cash when your premium tea arrives.</p>
+            <h3 className="text-lg font-bold text-tea-brown mb-2">Cash on Delivery</h3>
+            <p className="text-tea-brown/40 text-xs">Pay with cash when your premium tea arrives.</p>
           </button>
         </div>
 
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-tea-brown/5 mb-12">
+        <div className="bg-white p-8 rounded-3xl shadow-xl border border-tea-brown/5 mb-10">
           <div className="flex justify-between items-center mb-8">
-            <h3 className="text-2xl font-serif font-bold text-tea-brown">Total Amount</h3>
-            <span className="text-3xl font-bold text-tea-brown">₹{cartTotal}</span>
+            <h3 className="text-xl font-serif font-bold text-tea-brown">Total Amount</h3>
+            <span className="text-2xl font-bold text-tea-brown">₹{cartTotal}</span>
           </div>
           
           <button 
             onClick={handlePlaceOrder}
             disabled={isProcessing}
-            className="w-full bg-tea-brown text-tea-cream py-5 rounded-2xl font-bold text-lg hover:bg-tea-gold transition-all shadow-xl group flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full bg-tea-brown text-tea-cream py-4 rounded-xl font-bold text-base hover:bg-tea-gold transition-all shadow-xl group flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isProcessing ? (
               <span className="flex items-center">

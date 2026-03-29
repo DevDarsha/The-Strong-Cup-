@@ -59,16 +59,16 @@ const Shop: React.FC = () => {
       className="pt-32 pb-24"
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-serif font-bold text-tea-brown mb-6">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-brown mb-4">
             Our <span className="text-tea-gold italic">Collection</span>
           </h1>
-          <p className="text-tea-brown/50 max-w-2xl mx-auto text-lg">
+          <p className="text-tea-brown/50 max-w-2xl mx-auto text-base">
             Explore our range of premium Assam tea, crafted for strength and purity.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {PRODUCTS.map(product => (
             <ProductCard 
               key={product.id} 

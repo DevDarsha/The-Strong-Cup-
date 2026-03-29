@@ -55,10 +55,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onProdu
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-5 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <h3 
-            className="text-lg font-serif font-bold text-tea-brown group-hover:text-tea-gold transition-colors cursor-pointer line-clamp-1"
+            className="text-base font-serif font-bold text-tea-brown group-hover:text-tea-gold transition-colors cursor-pointer line-clamp-1"
             onClick={() => onProductClick(product)}
           >
             {product.name}
@@ -69,27 +69,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onProdu
           </div>
         </div>
         
-        <p className="text-tea-brown/50 text-xs mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-tea-brown/50 text-[11px] mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
         <div className="mt-auto space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-baseline space-x-2">
-              <span className="text-xl font-bold text-tea-brown">₹{product.price}</span>
+              <span className="text-lg font-bold text-tea-brown">₹{product.price}</span>
               <span className="text-xs text-tea-brown/40 line-through">₹{product.originalPrice}</span>
             </div>
             <button 
               onClick={() => onAddToCart(product)}
-              className="p-3 bg-tea-brown/5 text-tea-brown rounded-2xl hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-90"
+              className="p-2 bg-tea-brown/5 text-tea-brown rounded-xl hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-90"
             >
-              <ShoppingCart size={18} />
+              <ShoppingCart size={16} />
             </button>
           </div>
 
           <button 
             onClick={() => onBuyNow(product)}
-            className="w-full bg-tea-gold text-tea-brown py-4 rounded-2xl font-bold text-sm shadow-lg hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-95 flex items-center justify-center group/btn"
+            className="w-full bg-tea-gold text-tea-brown py-2.5 rounded-xl font-medium text-sm shadow-lg hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-95 flex items-center justify-center group/btn"
           >
             Buy Now
             <ArrowRight size={16} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />

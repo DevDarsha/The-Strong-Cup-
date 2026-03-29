@@ -54,11 +54,11 @@ const Hero: React.FC<HeroProps> = ({ onShopNow }) => {
               <Award size={16} className="text-tea-gold mr-2" />
               <span className="text-xs font-bold text-tea-brown uppercase tracking-widest">Premium Assam Tea</span>
             </motion.div>
-            <h1 className="text-6xl md:text-8xl font-serif font-bold text-tea-brown leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-tea-brown leading-[1.15]">
               Pure Assam Tea. <br />
               <span className="text-tea-gold italic">Nothing Added.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-tea-brown/60 font-medium tracking-wide">
+            <p className="text-base md:text-lg text-tea-brown/60 font-medium tracking-wide">
               No Colours | No Preservatives | Just Strong Natural Taste
             </p>
           </div>
@@ -66,14 +66,14 @@ const Hero: React.FC<HeroProps> = ({ onShopNow }) => {
           <div className="flex flex-col sm:flex-row gap-4">
             <button 
               onClick={onShopNow}
-              className="bg-tea-brown text-tea-cream px-10 py-5 rounded-full font-bold text-lg hover:bg-tea-gold transition-all shadow-2xl hover:shadow-tea-gold/20 flex items-center justify-center group"
+              className="bg-tea-brown text-tea-cream px-8 py-3 rounded-xl font-medium text-base hover:bg-tea-gold transition-all shadow-xl hover:shadow-tea-gold/20 flex items-center justify-center group"
             >
               Order Now
-              <ArrowRight size={22} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
             <button 
               onClick={onShopNow}
-              className="bg-white text-tea-brown border-2 border-tea-brown/10 px-10 py-5 rounded-full font-bold text-lg hover:border-tea-brown transition-all flex items-center justify-center"
+              className="bg-white text-tea-brown border-2 border-tea-brown/10 px-8 py-3 rounded-xl font-medium text-base hover:border-tea-brown transition-all flex items-center justify-center"
             >
               View Best Sellers
             </button>
@@ -109,9 +109,9 @@ const Hero: React.FC<HeroProps> = ({ onShopNow }) => {
               referrerPolicy="no-referrer"
             />
             {/* Price Badge Overlay */}
-            <div className="absolute bottom-10 left-10 glass p-6 rounded-3xl border border-white/20 shadow-2xl">
+            <div className="absolute bottom-6 left-6 glass p-5 rounded-2xl border border-white/20 shadow-xl">
               <div className="flex items-center space-x-3 mb-1">
-                <span className="text-3xl font-bold text-tea-brown">₹299</span>
+                <span className="text-2xl font-bold text-tea-brown">₹299</span>
                 <span className="text-sm text-tea-brown/40 line-through">₹399</span>
                 <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg uppercase tracking-wider">20% OFF</span>
               </div>

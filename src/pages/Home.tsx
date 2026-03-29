@@ -80,13 +80,13 @@ const Home: React.FC = () => {
       <Hero onShopNow={() => navigate('/shop')} />
       
       {/* Section 2: Best Sellers */}
-      <section id="products" className="py-24 bg-white">
+      <section id="products" className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-tea-brown mb-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-brown mb-4">
               🔥 Strong Cup <span className="text-tea-gold italic">Best Sellers</span>
             </h2>
-            <p className="text-tea-brown/50 max-w-2xl mx-auto text-lg">
+            <p className="text-tea-brown/60 max-w-2xl mx-auto text-base md:text-lg">
               Pure Assam tea, freshly packed and delivered to your doorstep.
             </p>
           </div>
@@ -106,10 +106,10 @@ const Home: React.FC = () => {
             ))}
           </div>
           
-          <div className="mt-16 text-center">
+          <div className="mt-12 text-center">
             <button 
               onClick={() => navigate('/shop')}
-              className="bg-tea-brown text-tea-cream px-10 py-4 rounded-full font-bold hover:bg-tea-gold transition-all shadow-xl group"
+              className="bg-tea-brown text-tea-cream px-8 py-3 rounded-xl font-medium text-base hover:bg-tea-gold transition-all shadow-xl group"
             >
               View All Best Sellers
               <ArrowRight size={20} className="ml-2 inline group-hover:translate-x-1 transition-transform" />
@@ -125,18 +125,18 @@ const Home: React.FC = () => {
       <Features />
       
       {/* Section 5: Customer Reviews */}
-      <section className="py-24 bg-white">
+      <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-tea-brown mb-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-brown mb-4">
               What <span className="text-tea-gold italic">Tea Lovers Say</span>
             </h2>
-            <p className="text-tea-brown/50 max-w-2xl mx-auto text-lg">
+            <p className="text-tea-brown/60 max-w-2xl mx-auto text-base md:text-lg">
               Join 1000+ Happy Customers who trust us for the perfect strong chai.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {TESTIMONIALS.map((t, i) => (
               <motion.div
                 key={i}
@@ -144,24 +144,24 @@ const Home: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="glass p-10 rounded-[2.5rem] relative group hover:shadow-2xl transition-all duration-500 border border-tea-brown/5"
+                className="glass p-8 rounded-[2.5rem] relative group hover:shadow-2xl transition-all duration-500 border border-tea-brown/5"
               >
-                <Quote className="absolute top-8 right-8 text-tea-gold/10 group-hover:text-tea-gold/20 transition-colors" size={64} />
-                <div className="flex text-tea-gold mb-6">
+                <Quote className="absolute top-6 right-6 text-tea-gold/10 group-hover:text-tea-gold/20 transition-colors" size={48} />
+                <div className="flex text-tea-gold mb-4">
                   {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
+                    <Star key={i} size={14} fill="currentColor" />
                   ))}
                 </div>
-                <p className="text-tea-brown/70 italic mb-8 text-lg leading-relaxed relative z-10">
+                <p className="text-tea-brown/70 italic mb-6 text-base leading-relaxed relative z-10">
                   "{t.text}"
                 </p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-tea-brown/10 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-tea-brown font-bold">{t.name[0]}</span>
+                  <div className="w-10 h-10 bg-tea-brown/10 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-tea-brown font-bold text-sm">{t.name[0]}</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-tea-brown">{t.name}</h4>
-                    <p className="text-xs text-tea-brown/40 uppercase tracking-widest font-bold">{t.location}</p>
+                    <h4 className="font-bold text-tea-brown text-sm">{t.name}</h4>
+                    <p className="text-[10px] text-tea-brown/40 uppercase tracking-widest font-bold">{t.location}</p>
                   </div>
                 </div>
               </motion.div>
@@ -170,7 +170,7 @@ const Home: React.FC = () => {
           <div className="text-center">
             <button 
               onClick={() => navigate('/shop')}
-              className="inline-flex items-center bg-tea-gold text-tea-brown px-10 py-4 rounded-full font-bold hover:bg-tea-brown hover:text-tea-cream transition-all shadow-xl group"
+              className="inline-flex items-center bg-tea-gold text-tea-brown px-8 py-3 rounded-xl font-medium text-base hover:bg-tea-brown hover:text-tea-cream transition-all shadow-xl group"
             >
               Read All Reviews
               <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -180,13 +180,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Section 6: Featured Product */}
-      <section className="py-24 bg-tea-cream">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section className="py-16 md:py-20 bg-tea-cream">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative overflow-hidden shadow-2xl"
+            className="relative overflow-hidden shadow-2xl rounded-[2.5rem]"
           >
             <img 
               src={PRODUCTS[1].image} 
@@ -194,50 +194,50 @@ const Home: React.FC = () => {
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute top-8 left-8 bg-tea-gold text-white px-6 py-2 font-bold shadow-lg">
+            <div className="absolute top-6 left-6 bg-tea-gold text-white px-4 py-2 text-xs font-bold shadow-lg rounded-full">
               🔥 Limited Stock Available
             </div>
           </motion.div>
-          <div className="space-y-8">
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-tea-brown">
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-brown leading-tight">
               Strong Cup <br />
               <span className="text-tea-gold italic">Gold Blend</span>
             </h2>
-            <p className="text-tea-brown/70 text-lg leading-relaxed">
+            <p className="text-tea-brown/70 text-base leading-relaxed">
               Crafted from premium Assam leaves, delivering rich color and strong aroma without any artificial additives. Just pure high-quality tea.
             </p>
-            <div className="flex items-center space-x-6">
-              <span className="text-4xl font-bold text-tea-brown">₹{PRODUCTS[1].price}</span>
-              <span className="bg-red-100 text-red-600 px-4 py-1 rounded-full font-bold text-sm">25% OFF</span>
+            <div className="flex items-center space-x-4">
+              <span className="text-2xl font-bold text-tea-brown">₹{PRODUCTS[1].price}</span>
+              <span className="bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest">25% OFF</span>
             </div>
             <button 
               onClick={() => navigate(`/product/${PRODUCTS[1].id}`)}
-              className="bg-tea-brown text-tea-cream px-12 py-5 rounded-full font-bold text-lg hover:bg-tea-gold transition-all shadow-xl group"
+              className="bg-tea-brown text-tea-cream px-8 py-3 rounded-xl font-medium text-base hover:bg-tea-gold transition-all shadow-xl group inline-flex items-center"
             >
               Order Now
-              <ArrowRight size={22} className="ml-2 inline group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
       </section>
 
       {/* Section 7: Brand Story */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="space-y-10 order-2 lg:order-1">
-            <h2 className="text-4xl md:text-6xl font-serif font-bold text-tea-brown leading-tight">
+      <section className="py-16 md:py-20 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6 order-2 lg:order-1">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-brown leading-tight">
               From Assam Gardens <br />
               <span className="text-tea-gold italic">to Your Cup</span>
             </h2>
-            <p className="text-tea-brown/60 text-lg leading-relaxed">
+            <p className="text-tea-brown/70 text-base leading-relaxed">
               Strong Cup is made from carefully selected Assam tea leaves, processed naturally without adding any colour or preservatives. We focus on purity, strength, and authentic taste in every sip.
             </p>
             <button 
               onClick={() => navigate('/about')}
-              className="bg-tea-brown/5 text-tea-brown px-10 py-4 rounded-full font-bold hover:bg-tea-brown hover:text-tea-cream transition-all group"
+              className="bg-tea-brown/5 text-tea-brown px-8 py-3 rounded-xl font-medium text-base hover:bg-tea-brown hover:text-tea-cream transition-all group inline-flex items-center"
             >
               Our Story
-              <ArrowRight size={20} className="ml-2 inline group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
           <div className="relative order-1 lg:order-2">
@@ -245,7 +245,7 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative z-10 overflow-hidden shadow-2xl border-8 border-white"
+              className="relative z-10 overflow-hidden shadow-2xl border-8 border-white rounded-[2.5rem]"
             >
               <img 
                 src="https://images.unsplash.com/photo-1544787210-2213d84ad96b?auto=format&fit=crop&q=80&w=1000" 
@@ -259,7 +259,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Section 8: Final CTA Banner */}
-      <section className="py-24 bg-tea-brown relative overflow-hidden">
+      <section className="py-16 md:py-20 bg-tea-brown relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <img 
             src="https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?auto=format&fit=crop&q=80&w=1200" 
@@ -268,17 +268,17 @@ const Home: React.FC = () => {
           />
         </div>
         <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-serif font-bold text-tea-cream mb-8 leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-tea-cream mb-6 leading-tight">
             Taste the Real <br />
             <span className="text-tea-gold italic">Strength of Assam</span>
           </h2>
-          <p className="text-tea-cream/70 text-lg mb-12 max-w-2xl mx-auto">
+          <p className="text-tea-cream/70 text-base md:text-lg mb-8 max-w-2xl mx-auto">
             No chemicals. No shortcuts. Just pure high-quality tea. Order your pack today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
             <button 
               onClick={() => navigate('/shop')}
-              className="bg-tea-gold text-tea-brown px-12 py-5 rounded-full font-bold text-lg hover:bg-white transition-all shadow-xl hover:shadow-white/20 group"
+              className="bg-tea-gold text-tea-brown px-8 py-3 rounded-xl font-medium text-base hover:bg-white transition-all shadow-xl hover:shadow-white/20 group"
             >
               Order Your Pack Today
               <ArrowRight size={20} className="ml-2 inline group-hover:translate-x-1 transition-transform" />

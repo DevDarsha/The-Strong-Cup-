@@ -1,4 +1,4 @@
-import { ShoppingCart, Search, User, Menu, X } from 'lucide-react';
+import { ShoppingCart, Search, Package, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
@@ -31,28 +31,28 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass py-3 shadow-md' : 'bg-transparent py-5'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass py-3 shadow-md' : 'bg-transparent py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
         {/* Logo */}
         <Link 
           to="/"
           className="flex items-center cursor-pointer group" 
         >
-          <div className="w-10 h-10 bg-tea-brown rounded-xl flex items-center justify-center mr-3 shadow-lg group-hover:bg-tea-gold transition-colors">
-            <ShoppingCart className="text-tea-cream" size={20} />
+          <div className="w-8 h-8 bg-tea-brown rounded-lg flex items-center justify-center mr-2 shadow-lg group-hover:bg-tea-gold transition-colors">
+            <ShoppingCart className="text-tea-cream" size={16} />
           </div>
-          <h1 className="text-xl md:text-2xl font-serif font-bold tracking-tight text-tea-brown">
+          <h1 className="text-base md:text-lg font-serif font-bold tracking-tight text-tea-brown">
             THE <span className="text-tea-gold italic">STRONG</span> CUP
           </h1>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
-              className={`text-tea-brown font-medium hover:text-tea-gold transition-colors relative group ${location.pathname === link.path ? 'text-tea-gold' : ''}`}
+              className={`text-tea-brown font-medium text-sm hover:text-tea-gold transition-colors relative group ${location.pathname === link.path ? 'text-tea-gold' : ''}`}
             >
               {link.name}
               <span className={`absolute -bottom-1 left-0 h-0.5 bg-tea-gold transition-all group-hover:w-full ${location.pathname === link.path ? 'w-full' : 'w-0'}`}></span>
@@ -65,8 +65,8 @@ export default function Navbar() {
           <button className="text-tea-brown hover:text-tea-gold transition-colors">
             <Search size={22} />
           </button>
-          <Link to="/account" className="text-tea-brown hover:text-tea-gold transition-colors hidden sm:block">
-            <User size={22} />
+          <Link to="/track-order" className="text-tea-brown hover:text-tea-gold transition-colors hidden sm:block" title="Track Order">
+            <Package size={22} />
           </Link>
           <Link 
             to="/cart"
@@ -107,8 +107,8 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/account" className="flex items-center text-tea-brown font-medium py-2">
-                <User size={20} className="mr-2" /> My Account
+              <Link to="/track-order" className="flex items-center text-tea-brown font-medium py-2">
+                <Package size={20} className="mr-2" /> Track Order
               </Link>
             </div>
           </motion.div>
