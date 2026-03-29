@@ -32,26 +32,50 @@ export const AdminLogin: React.FC = () => {
     setIsLoading(true);
 
     try {
+      console.log('[v0] Starting admin login with email:', email);
+
+      // Validate inputs
+      if (!email || !password) {
+        setError('Please enter both email and password.');
+        setIsLoading(false);
+        return;
+      }
+
       // Sign in with email and password
       const { data, error: signInError } = await signIn({ email, password });
 
+      console.log('[v0] Sign in response:', { signInError, hasData: !!data });
+
       if (signInError) {
-        setError(signInError);
+        // Handle specific error messages
+        if (signInError.includes('Failed to fetch')) {
+          setError('Network error. Please check: 1) Your internet connection 2) Supabase is configured in .env.local 3) Supabase project is active');
+        } else if (signInError.includes('Invalid login credentials')) {
+          setError('Invalid email or password. Please check credentials and ensure admin user exists in Supabase.');
+        } else if (signInError.includes('User not found')) {
+          setError('Admin user not found. Please create the admin account in Supabase Authentication.');
+        } else {
+          setError(signInError);
+        }
         setIsLoading(false);
         return;
       }
 
       if (!data) {
-        setError('Sign in failed. Please try again.');
+        setError('Sign in failed. Please ensure the admin user exists in Supabase.');
         setIsLoading(false);
         return;
       }
 
+      console.log('[v0] Checking admin status...');
+
       // Check if user is admin
       const { isAdmin, error: adminError } = await checkAdminStatus();
 
+      console.log('[v0] Admin status check:', { isAdmin, adminError });
+
       if (adminError) {
-        setError('Failed to verify admin status.');
+        setError(`Failed to verify admin status: ${adminError}. Make sure user_profiles table exists and user is marked as admin.`);
         setIsLoading(false);
         return;
       }
@@ -59,16 +83,23 @@ export const AdminLogin: React.FC = () => {
       if (!isAdmin) {
         // Sign out non-admin user
         await supabase.auth.signOut();
-        setError('Access denied. Admin credentials required.');
+        setError('Access denied. This account does not have admin privileges. Please contact your system administrator.');
         setIsLoading(false);
         return;
       }
 
+      console.log('[v0] Admin login successful, redirecting...');
       // Admin login successful
       navigate('/admin/dashboard');
     } catch (err) {
       console.error('[v0] Login error:', err);
-      setError('An unexpected error occurred. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      
+      if (errorMessage.includes('Failed to fetch')) {
+        setError('Network error: Unable to connect to Supabase. Please verify your connection and .env.local configuration.');
+      } else {
+        setError(`An error occurred: ${errorMessage}`);
+      }
       setIsLoading(false);
     }
   };
@@ -167,6 +198,17 @@ export const AdminLogin: React.FC = () => {
           <p className="mt-6 text-center text-xs text-slate-500">
             This admin portal is for authorized personnel only.
           </p>
+
+          {/* Setup Help */}
+          <div className="mt-6 p-3 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+            <p className="text-xs text-blue-300 mb-2 font-medium">Troubleshooting "Failed to fetch"?</p>
+            <ul className="text-xs text-blue-200/70 space-y-1 list-disc list-inside">
+              <li>Check .env.local has VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY</li>
+              <li>Verify Supabase project is active (not paused)</li>
+              <li>Confirm admin user exists in Supabase Authentication</li>
+              <li>See ADMIN_USER_SETUP.md for detailed instructions</li>
+            </ul>
+          </div>
         </div>
 
         {/* Security notice */}
