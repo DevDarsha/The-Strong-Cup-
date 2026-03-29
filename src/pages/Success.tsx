@@ -15,6 +15,28 @@ const Success: React.FC = () => {
       exit={{ opacity: 0 }}
       className="pt-40 pb-20 px-4 text-center min-h-screen flex flex-col items-center justify-center max-w-3xl mx-auto"
     >
+      {/* Step Indicator */}
+      <div className="flex items-center justify-center mb-12 w-full max-w-xl mx-auto">
+        <div className="flex flex-col items-center relative z-10">
+          <div className="w-10 h-10 bg-tea-green text-white rounded-full flex items-center justify-center font-bold shadow-lg">
+            <CheckCircle2 size={20} />
+          </div>
+          <span className="text-xs font-bold text-tea-green mt-2 uppercase tracking-widest">Shipping</span>
+        </div>
+        <div className="flex-grow h-1 bg-tea-green mx-4 -mt-6" />
+        <div className="flex flex-col items-center relative z-10">
+          <div className="w-10 h-10 bg-tea-green text-white rounded-full flex items-center justify-center font-bold shadow-lg">
+            <CheckCircle2 size={20} />
+          </div>
+          <span className="text-xs font-bold text-tea-green mt-2 uppercase tracking-widest">Payment</span>
+        </div>
+        <div className="flex-grow h-1 bg-tea-green mx-4 -mt-6" />
+        <div className="flex flex-col items-center relative z-10">
+          <div className="w-10 h-10 bg-tea-brown text-tea-cream rounded-full flex items-center justify-center font-bold shadow-lg">3</div>
+          <span className="text-xs font-bold text-tea-brown mt-2 uppercase tracking-widest">Success</span>
+        </div>
+      </div>
+
       <div className="w-16 h-16 bg-tea-green/10 rounded-full flex items-center justify-center mb-5">
         <CheckCircle2 size={36} className="text-tea-green" />
       </div>
@@ -67,6 +89,25 @@ const Success: React.FC = () => {
               <p className="text-xs text-tea-brown/70 mt-1">{orderData.shipping.email}</p>
             </div>
           </div>
+
+          {orderData.paymentMethod && (
+            <div className="mt-5 bg-tea-cream/30 p-5 rounded-2xl border border-tea-brown/5">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-tea-brown/40 mb-2 flex items-center"><ShieldCheck size={12} className="mr-1" /> Payment Information</p>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-tea-brown">Method: {orderData.paymentMethod}</p>
+                  {orderData.utrNumber && <p className="text-xs text-tea-brown/70 mt-1 font-mono">UTR: {orderData.utrNumber}</p>}
+                </div>
+                <div>
+                  {orderData.paymentStatus === 'pending_verification' ? (
+                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Verifying</span>
+                  ) : (
+                    <span className="bg-tea-green/20 text-tea-green px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Confirmed</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

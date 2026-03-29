@@ -8,10 +8,27 @@ const TrackOrder: React.FC = () => {
   const [trackingResult, setTrackingResult] = useState<any>(null);
   const [error, setError] = useState('');
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTrackingInput(value);
+    
+    if (!value.trim()) {
+      setError('Please enter your Order ID or Mobile Number');
+    } else if (value.trim().length < 5) {
+      setError('Input is too short');
+    } else {
+      setError('');
+    }
+  };
+
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trackingInput.trim()) {
       setError('Please enter your Order ID or Mobile Number');
+      return;
+    }
+    if (trackingInput.trim().length < 5) {
+      setError('Input is too short');
       return;
     }
     
@@ -69,10 +86,7 @@ const TrackOrder: React.FC = () => {
               <input
                 type="text"
                 value={trackingInput}
-                onChange={(e) => {
-                  setTrackingInput(e.target.value);
-                  if (error) setError('');
-                }}
+                onChange={handleInputChange}
                 placeholder="e.g. TSC-123456 or 9876543210"
                 className={`w-full bg-tea-cream/30 border-2 ${error ? 'border-red-400' : 'border-tea-brown/10'} pl-12 pr-32 py-3.5 rounded-xl focus:border-tea-gold outline-none transition-all text-base text-tea-brown placeholder:text-tea-brown/30`}
               />

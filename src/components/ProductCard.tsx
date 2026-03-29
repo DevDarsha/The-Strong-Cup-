@@ -1,7 +1,7 @@
-import { ShoppingCart, Star, Zap, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Star, Zap, ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Product } from '../types';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -11,6 +11,15 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onProductClick, onBuyNow }) => {
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product);
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 2000);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -33,6 +42,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onProdu
         {/* Darken Overlay on Hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
         
+        {/* Hover Add to Cart Button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+          <button
+            onClick={handleAddToCart}
+            disabled={isAdded}
+            className={`transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 flex items-center space-x-2 px-6 py-3 rounded-full font-bold shadow-2xl ${
+              isAdded 
+                ? 'bg-tea-green text-white scale-105' 
+                : 'bg-white text-tea-brown hover:bg-tea-brown hover:text-white'
+            }`}
+          >
+            {isAdded ? (
+              <>
+                <Check size={18} />
+                <span>Added</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={18} />
+                <span>Add to Cart</span>
+              </>
+            )}
+          </button>
+        </div>
+
         {/* Badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-2">
           {product.status && (
@@ -80,15 +114,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onProdu
               <span className="text-xs text-tea-brown/40 line-through">₹{product.originalPrice}</span>
             </div>
             <button 
-              onClick={() => onAddToCart(product)}
-              className="p-2 bg-tea-brown/5 text-tea-brown rounded-xl hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-90"
+              onClick={handleAddToCart}
+              disabled={isAdded}
+              className={`p-2 rounded-xl transition-all active:scale-90 ${
+                isAdded 
+                  ? 'bg-tea-green text-white' 
+                  : 'bg-tea-brown/5 text-tea-brown hover:bg-tea-brown hover:text-tea-cream'
+              }`}
             >
-              <ShoppingCart size={16} />
+              {isAdded ? <Check size={16} /> : <ShoppingCart size={16} />}
             </button>
           </div>
 
           <button 
-            onClick={() => onBuyNow(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onBuyNow(product);
+            }}
             className="w-full bg-tea-gold text-tea-brown py-2.5 rounded-xl font-medium text-sm shadow-lg hover:bg-tea-brown hover:text-tea-cream transition-all active:scale-95 flex items-center justify-center group/btn"
           >
             Buy Now

@@ -1,6 +1,48 @@
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Send, ShoppingBag } from 'lucide-react';
+import React, { useState } from 'react';
+import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Send, ShoppingBag, Loader2, CheckCircle2 } from 'lucide-react';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    
+    if (!value.trim()) {
+      setError('Email is required');
+    } else if (!/\S+@\S+\.\S+/.test(value)) {
+      setError('Invalid email format');
+    } else {
+      setError('');
+    }
+  };
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+    
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError('Invalid email format');
+      return;
+    }
+    
+    setError('');
+    setIsSubmitting(true);
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setEmail('');
+      setTimeout(() => setIsSuccess(false), 3000);
+    }, 1000);
+  };
   return (
     <footer className="bg-tea-brown text-tea-cream pt-16 pb-8 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -70,16 +112,31 @@ export default function Footer() {
             <p className="text-tea-cream/60 mb-4 text-xs">
               Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
             </p>
-            <div className="relative">
+            <form onSubmit={handleSubscribe} className="relative">
               <input 
                 type="email" 
+                value={email}
+                onChange={handleEmailChange}
                 placeholder="Your email address" 
-                className="w-full bg-tea-gold/10 border border-tea-gold/20 rounded-full py-3 px-4 text-sm text-tea-cream placeholder:text-tea-cream/30 focus:outline-none focus:border-tea-gold transition-colors"
+                className={`w-full bg-tea-gold/10 border ${error ? 'border-red-400/50' : 'border-tea-gold/20'} rounded-full py-3 px-4 text-sm text-tea-cream placeholder:text-tea-cream/30 focus:outline-none focus:border-tea-gold transition-colors`}
               />
-              <button className="absolute right-1.5 top-1.5 bg-tea-gold text-tea-brown p-2 rounded-full hover:bg-white transition-all shadow-lg active:scale-95">
-                <Send size={14} />
+              <button 
+                type="submit"
+                disabled={isSubmitting || isSuccess}
+                className={`absolute right-1.5 top-1.5 p-2 rounded-full transition-all shadow-lg flex items-center justify-center ${
+                  isSuccess ? 'bg-green-500 text-white' : 'bg-tea-gold text-tea-brown hover:bg-white active:scale-95'
+                } disabled:opacity-70 disabled:cursor-not-allowed`}
+              >
+                {isSubmitting ? (
+                  <Loader2 size={14} className="animate-spin" />
+                ) : isSuccess ? (
+                  <CheckCircle2 size={14} />
+                ) : (
+                  <Send size={14} />
+                )}
               </button>
-            </div>
+            </form>
+            {error && <p className="text-red-400 text-[10px] font-bold uppercase tracking-widest mt-2 ml-4">{error}</p>}
           </div>
         </div>
 

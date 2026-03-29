@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence } from 'motion/react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import ScrollToTop from './components/ScrollToTop';
 import { CartProvider } from './context/CartContext';
 
 // Pages
@@ -23,12 +22,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-tea-cream selection:bg-tea-gold selection:text-tea-brown flex flex-col">
-      <ScrollToTop />
       {!isProductPage && <Navbar />}
       
       <main className="flex-grow">
-        <AnimatePresence mode="wait">
-          <Routes>
+        <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+          {/* @ts-ignore - key is valid in React but missing in RoutesProps types */}
+          <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/product/:id" element={<ProductPage />} />

@@ -1,9 +1,17 @@
 import { Star, ShoppingCart, Heart, Share2, Plus, Minus, CheckCircle, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
+
+interface Review {
+  id: string;
+  name: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
 
 interface ProductDetailProps {
   product: Product;
@@ -27,6 +35,71 @@ export default function ProductDetail({
   const [showSticky, setShowSticky] = useState(false);
   const { cartCount } = useCart();
   const navigate = useNavigate();
+
+  const [reviews, setReviews] = useState<Review[]>([
+    {
+      id: '1',
+      name: 'Sarah Jenkins',
+      rating: 5,
+      comment: 'Absolutely love this tea! The flavor is rich and authentic. Will definitely buy again.',
+      date: '2026-03-15'
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      rating: 4,
+      comment: 'Great quality leaves. The packaging is beautiful too. A bit pricey but worth it.',
+      date: '2026-03-10'
+    }
+  ]);
+
+  const [newReview, setNewReview] = useState({ name: '', rating: 5, comment: '' });
+  const [reviewErrors, setReviewErrors] = useState<Record<string, string>>({});
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+
+  const handleReviewChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setNewReview(prev => ({ ...prev, [name]: value }));
+    
+    const newErrors = { ...reviewErrors };
+    if (name === 'name') {
+      if (!value.trim()) newErrors.name = 'Name is required';
+      else delete newErrors.name;
+    } else if (name === 'comment') {
+      if (!value.trim()) newErrors.comment = 'Comment is required';
+      else delete newErrors.comment;
+    }
+    setReviewErrors(newErrors);
+  };
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const newErrors: Record<string, string> = {};
+    if (!newReview.name.trim()) newErrors.name = 'Name is required';
+    if (!newReview.comment.trim()) newErrors.comment = 'Comment is required';
+    
+    setReviewErrors(newErrors);
+    
+    if (Object.keys(newErrors).length === 0) {
+      setIsSubmittingReview(true);
+      
+      // Simulate API call
+      setTimeout(() => {
+        const review: Review = {
+          id: Date.now().toString(),
+          name: newReview.name,
+          rating: newReview.rating,
+          comment: newReview.comment,
+          date: new Date().toISOString().split('T')[0]
+        };
+        
+        setReviews([review, ...reviews]);
+        setNewReview({ name: '', rating: 5, comment: '' });
+        setIsSubmittingReview(false);
+      }, 1000);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -123,16 +196,16 @@ export default function ProductDetail({
                 {product.name}
               </h1>
               
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mb-2">
                 <span className="text-2xl font-bold text-tea-brown">₹{product.price}</span>
                 <span className="text-lg text-tea-brown/40 line-through">₹{product.originalPrice}</span>
                 <span className="bg-tea-green/10 text-tea-green text-[10px] font-bold px-2 py-1 rounded-full border border-tea-green/20">Save ₹{product.originalPrice - product.price}</span>
               </div>
               
-              {/* Urgency Element */}
-              <div className="flex items-center space-x-2 text-red-600 bg-red-50 px-4 py-2 rounded-xl border border-red-100 w-fit">
-                <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
-                <span className="text-xs font-bold uppercase tracking-wider">Only 5 packs left in stock!</span>
+              {/* Trust + Urgency */}
+              <div className="flex flex-col space-y-1.5 mb-4">
+                <span className="text-sm font-medium text-tea-brown/80">🔥 1200+ Tea Lovers Trust This</span>
+                <span className="text-sm font-medium text-red-600/90">⚠️ Only 12 packs left today</span>
               </div>
             </div>
 
@@ -153,7 +226,8 @@ export default function ProductDetail({
             </div>
 
             <div className="pt-6 border-t border-tea-brown/10 space-y-4">
-              <div className="flex flex-wrap items-center gap-4">
+              {/* Quantity and Actions */}
+              <div className="flex items-center gap-4">
                 <div className="flex items-center bg-white rounded-xl p-1 border-2 border-tea-brown/10 shadow-sm">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -169,15 +243,8 @@ export default function ProductDetail({
                     <Plus size={16} />
                   </button>
                 </div>
-
-                <div className="flex space-x-3 flex-1 min-w-[200px]">
-                  <button 
-                    onClick={() => onAddToCart(product, quantity)}
-                    className="flex-1 bg-tea-brown text-tea-cream py-2.5 rounded-xl font-medium text-sm flex items-center justify-center hover:bg-tea-gold transition-all shadow-xl hover:shadow-tea-gold/20 active:scale-95 group"
-                  >
-                    <ShoppingCart size={18} className="mr-2 group-hover:scale-110 transition-transform" />
-                    Add to Cart
-                  </button>
+                
+                <div className="flex space-x-3">
                   <button className="p-2.5 rounded-xl border-2 border-tea-brown text-tea-brown hover:bg-tea-brown hover:text-tea-cream transition-all shadow-sm active:scale-95">
                     <Heart size={18} />
                   </button>
@@ -187,12 +254,28 @@ export default function ProductDetail({
                 </div>
               </div>
 
-              <button 
-                onClick={() => onBuyNow(product, quantity)}
-                className="w-full bg-tea-gold text-tea-brown py-3 rounded-xl font-medium text-base flex items-center justify-center hover:bg-tea-brown hover:text-tea-cream transition-all shadow-xl hover:shadow-tea-brown/20 active:scale-95"
-              >
-                Buy It Now
-              </button>
+              {/* Buy Buttons */}
+              <div className="space-y-3 pt-2">
+                <div className="space-y-1.5">
+                  <button 
+                    onClick={() => onBuyNow(product, quantity)}
+                    className="w-full bg-tea-gold text-tea-brown py-4 rounded-xl font-bold text-lg flex items-center justify-center hover:bg-[#e6a835] transition-all shadow-xl hover:shadow-tea-gold/30 active:scale-95"
+                  >
+                    Buy Now
+                  </button>
+                  <p className="text-center text-xs text-tea-brown/60 font-medium">
+                    🚚 Free Delivery | ⚡ Fast Dispatch
+                  </p>
+                </div>
+                
+                <button 
+                  onClick={() => onAddToCart(product, quantity)}
+                  className="w-full bg-transparent border-2 border-tea-brown/20 text-tea-brown py-3 rounded-xl font-medium text-base flex items-center justify-center hover:border-tea-brown hover:bg-tea-brown/5 transition-all active:scale-95 group"
+                >
+                  <ShoppingCart size={18} className="mr-2" />
+                  Add to Cart
+                </button>
+              </div>
             </div>
 
             {/* Trust Badges */}
@@ -213,6 +296,100 @@ export default function ProductDetail({
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-serif font-bold text-tea-brown mb-8 text-center">
+            Customer <span className="text-tea-gold italic">Reviews</span>
+          </h2>
+          
+          <div className="space-y-6 mb-12">
+            {reviews.map(review => (
+              <div key={review.id} className="bg-white p-6 rounded-2xl shadow-sm border border-tea-brown/5">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 className="font-bold text-tea-brown">{review.name}</h4>
+                    <span className="text-xs text-tea-brown/50">{review.date}</span>
+                  </div>
+                  <div className="flex text-tea-gold">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} fill={i < review.rating ? "currentColor" : "none"} className={i < review.rating ? "" : "text-tea-brown/20"} />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-tea-brown/80 text-sm leading-relaxed">{review.comment}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Submit Review Form */}
+          <div className="bg-tea-gold/5 p-6 md:p-8 rounded-3xl border border-tea-gold/20">
+            <h3 className="text-xl font-serif font-bold text-tea-brown mb-6">Write a Review</h3>
+            <form onSubmit={handleSubmitReview} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-tea-brown mb-1">Your Name</label>
+                  <input 
+                    type="text" 
+                    name="name"
+                    value={newReview.name}
+                    onChange={handleReviewChange}
+                    className={`w-full px-4 py-3 rounded-xl border ${reviewErrors.name ? 'border-red-400' : 'border-tea-brown/10'} focus:outline-none focus:ring-2 focus:ring-tea-gold/50 bg-white`}
+                    placeholder="John Doe"
+                  />
+                  {reviewErrors.name && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-1">{reviewErrors.name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-tea-brown mb-1">Rating</label>
+                  <div className="flex items-center space-x-2 h-[50px] bg-white px-4 rounded-xl border border-tea-brown/10">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewReview({...newReview, rating: star})}
+                        className="focus:outline-none"
+                      >
+                        <Star 
+                          size={24} 
+                          fill={star <= newReview.rating ? "currentColor" : "none"} 
+                          className={star <= newReview.rating ? "text-tea-gold" : "text-tea-brown/20"} 
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-tea-brown mb-1">Your Comment</label>
+                <textarea 
+                  name="comment"
+                  value={newReview.comment}
+                  onChange={handleReviewChange}
+                  className={`w-full px-4 py-3 rounded-xl border ${reviewErrors.comment ? 'border-red-400' : 'border-tea-brown/10'} focus:outline-none focus:ring-2 focus:ring-tea-gold/50 bg-white min-h-[120px] resize-y`}
+                  placeholder="Share your experience with this tea..."
+                />
+                {reviewErrors.comment && <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest mt-1">{reviewErrors.comment}</p>}
+              </div>
+              <button 
+                type="submit"
+                disabled={isSubmittingReview}
+                className="bg-tea-brown text-tea-cream px-8 py-3 rounded-xl font-bold hover:bg-tea-gold transition-colors shadow-lg flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSubmittingReview ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Review'
+                )}
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Related Products Section - 2x2 Grid Layout */}
@@ -251,51 +428,40 @@ export default function ProductDetail({
         </div>
       </div>
 
-      {/* Sticky Add to Cart Bar */}
+      {/* Sticky Bottom Bar */}
       <AnimatePresence>
         {showSticky && (
           <motion.div
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             exit={{ y: 100 }}
-            className="fixed bottom-0 left-0 right-0 z-40 glass border-t border-tea-brown/10 p-4 md:px-8 shadow-[0_-10px_30px_rgba(74,44,42,0.1)]"
+            className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-tea-brown/10 p-3 md:p-4 shadow-[0_-10px_30px_rgba(74,44,42,0.1)]"
           >
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-              <div className="hidden sm:flex items-center space-x-4">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="w-12 h-12 rounded-lg object-cover border border-tea-brown/10" 
-                  referrerPolicy="no-referrer"
-                />
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 md:px-8">
+              <div className="flex items-center space-x-3">
+                <div className="hidden sm:block">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-12 h-12 rounded-lg object-cover border border-tea-brown/10" 
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
                 <div>
-                  <h4 className="font-serif font-bold text-tea-brown leading-none mb-1">{product.name}</h4>
-                  <p className="text-tea-gold font-bold">₹{product.price}</p>
+                  <h4 className="font-serif font-bold text-tea-brown leading-none mb-1 hidden sm:block">{product.name}</h4>
+                  <div className="flex items-center space-x-2">
+                    <p className="text-xl font-bold text-tea-brown">₹{product.price}</p>
+                    <p className="text-sm text-tea-brown/50 line-through">₹{product.originalPrice}</p>
+                  </div>
                 </div>
               </div>
               
-              <div className="flex-1 sm:flex-none flex items-center space-x-4">
-                <div className="hidden md:flex items-center bg-white rounded-xl p-1 border border-tea-brown/10">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                    className="p-1 text-tea-brown hover:bg-tea-cream rounded-md transition-colors"
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="w-8 text-center font-bold text-tea-brown">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)} 
-                    className="p-1 text-tea-brown hover:bg-tea-cream rounded-md transition-colors"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
+              <div className="flex items-center space-x-3 flex-1 sm:flex-none justify-end">
                 <button 
-                  onClick={() => onAddToCart(product, quantity)}
-                  className="flex-1 sm:w-48 bg-tea-brown text-tea-cream py-3 rounded-xl font-bold flex items-center justify-center hover:bg-tea-gold transition-all shadow-lg active:scale-95 group"
+                  onClick={() => onBuyNow(product, quantity)}
+                  className="w-full sm:w-auto px-8 bg-tea-gold text-tea-brown py-3 rounded-xl font-bold text-base flex items-center justify-center hover:bg-[#e6a835] transition-all shadow-lg active:scale-95"
                 >
-                  <ShoppingCart size={18} className="mr-2 group-hover:scale-110 transition-transform" />
-                  Add to Cart
+                  Buy Now
                 </button>
               </div>
             </div>
