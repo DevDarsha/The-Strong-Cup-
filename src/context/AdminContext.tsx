@@ -43,32 +43,46 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Subscribe to new orders for real-time notifications
   useEffect(() => {
-    const subscription = supabase
-      .channel('admin-new-orders')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'orders',
-        },
-        (payload) => {
-          setNewOrdersCount((prev) => prev + 1);
-          addToast(
-            `New order received! Order #${payload.new.order_number}`,
-            'success',
-            5000
-          );
+    try {
+      // Only attempt to subscribe if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-          // Play notification sound if available
-          playNotificationSound();
-        }
-      )
-      .subscribe();
+      if (!supabaseUrl || !supabaseKey) {
+        console.log('[v0] Supabase not configured - skipping admin subscriptions');
+        return;
+      }
 
-    return () => {
-      subscription.unsubscribe();
-    };
+      const subscription = supabase
+        .channel('admin-new-orders')
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'orders',
+          },
+          (payload) => {
+            setNewOrdersCount((prev) => prev + 1);
+            addToast(
+              `New order received! Order #${payload.new.order_number}`,
+              'success',
+              5000
+            );
+
+            // Play notification sound if available
+            playNotificationSound();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error('[v0] Failed to setup admin subscriptions:', error);
+      // Don't throw - let the app continue without real-time features
+    }
   }, [addToast]);
 
   return (
