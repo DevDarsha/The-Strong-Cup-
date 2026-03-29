@@ -7,6 +7,8 @@ import { useCart } from '../context/CartContext';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [showAdminHint, setShowAdminHint] = useState(false);
   const { cartCount } = useCart();
   const location = useLocation();
 
@@ -23,6 +25,32 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Handle logo clicks for Easter egg
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const newCount = logoClickCount + 1;
+    setLogoClickCount(newCount);
+
+    // Show hint at 3 clicks
+    if (newCount === 3) {
+      setShowAdminHint(true);
+      setTimeout(() => setShowAdminHint(false), 2000);
+    }
+
+    // Redirect to admin login at 5 clicks
+    if (newCount >= 5) {
+      window.location.href = '/admin/login';
+      setLogoClickCount(0);
+      setShowAdminHint(false);
+      return;
+    }
+
+    // Reset counter after 5 seconds of inactivity
+    setTimeout(() => {
+      setLogoClickCount(0);
+    }, 5000);
+  };
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Shop', path: '/shop' },
@@ -33,10 +61,11 @@ export default function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'glass py-3 shadow-md' : 'bg-transparent py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between">
-        {/* Logo */}
-        <Link 
-          to="/"
-          className="flex items-center cursor-pointer group" 
+        {/* Logo - with Easter egg click counter */}
+        <button
+          onClick={handleLogoClick}
+          className="flex items-center cursor-pointer group relative"
+          title={logoClickCount > 0 ? `Clicks: ${logoClickCount}/5` : 'The Strong Cup'}
         >
           <div className="w-8 h-8 bg-tea-brown rounded-lg flex items-center justify-center mr-2 shadow-lg group-hover:bg-tea-gold transition-colors">
             <ShoppingCart className="text-tea-cream" size={16} />
@@ -44,7 +73,26 @@ export default function Navbar() {
           <h1 className="text-base md:text-lg font-serif font-bold tracking-tight text-tea-brown">
             THE <span className="text-tea-gold italic">STRONG</span> CUP
           </h1>
-        </Link>
+          {/* Click counter indicator */}
+          {logoClickCount > 0 && (
+            <div className="absolute -bottom-1 left-0 flex gap-1">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-0.5 w-1 rounded-full transition-colors ${
+                    i < logoClickCount ? 'bg-tea-gold' : 'bg-tea-brown/20'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+          {/* Hint message */}
+          {showAdminHint && (
+            <div className="absolute top-12 left-0 bg-tea-brown text-tea-cream text-xs px-2 py-1 rounded whitespace-nowrap">
+              Keep clicking! {logoClickCount}/5
+            </div>
+          )}
+        </button>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
