@@ -11,7 +11,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
+    <div className="flex h-screen bg-slate-900 overflow-hidden">
       {/* Sidebar */}
       <AdminSidebar 
         isOpen={sidebarOpen} 
@@ -21,15 +21,15 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-slate-900">
         {/* Top bar */}
         <AdminTopBar 
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-4 md:p-8">
+        <main className="flex-1 overflow-y-auto bg-slate-900">
+          <div className="p-4 md:p-8 bg-slate-900">
             {children}
           </div>
         </main>

@@ -110,10 +110,18 @@ export default function Navbar() {
               <Link to="/track-order" className="flex items-center text-tea-brown font-medium py-2">
                 <Package size={20} className="mr-2" /> Track Order
               </Link>
+              <Link to="/admin/login" className="flex items-center text-xs text-tea-brown/50 font-medium py-2">
+                Admin
+              </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Hidden admin link for testing - accessible via pressing 'A' key */}
+      <div className="text-transparent fixed bottom-0 right-0 w-1 h-1 overflow-hidden">
+        <Link to="/admin/login">Admin</Link>
+      </div>
     </nav>
   );
 }

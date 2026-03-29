@@ -31,10 +31,11 @@ import Settings from './pages/admin/Settings';
 function AppContent() {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith('/product/');
+  const isAdminPage = location.pathname.startsWith('/admin/');
 
   return (
     <div className="min-h-screen bg-tea-cream selection:bg-tea-gold selection:text-tea-brown flex flex-col">
-      {!isProductPage && <Navbar />}
+      {!isProductPage && !isAdminPage && <Navbar />}
       
       <main className="flex-grow">
         <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
@@ -114,7 +115,7 @@ function AppContent() {
         </AnimatePresence>
       </main>
 
-      {!isProductPage && <Footer />}
+      {!isProductPage && !isAdminPage && <Footer />}
     </div>
   );
 }

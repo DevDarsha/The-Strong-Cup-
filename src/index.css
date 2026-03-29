@@ -9,6 +9,17 @@
   --color-tea-gold: #C89B3C;
   --color-tea-green: #3FA34D;
   --color-tea-cream: #F5E6C8;
+
+  /* Admin panel colors */
+  --color-background: #0F172A;
+  --color-foreground: #F1F5F9;
+  --color-primary: #3B82F6;
+  --color-primary-dark: #1E40AF;
+  --color-secondary: #6B7280;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-border: #1E293B;
 }
 
 @layer base {
@@ -17,6 +28,43 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
+  }
+
+  /* Admin panel styles */
+  .admin-page {
+    @apply bg-background text-foreground;
+  }
+
+  .admin-card {
+    @apply bg-slate-800 border border-border rounded-lg;
+  }
+
+  .admin-input {
+    @apply bg-slate-900 border border-border text-foreground rounded-lg px-3 py-2;
+  }
+
+  .admin-button-primary {
+    @apply bg-primary hover:bg-primary-dark text-white rounded-lg px-4 py-2 transition;
+  }
+
+  .admin-button-secondary {
+    @apply bg-slate-700 hover:bg-slate-600 text-foreground rounded-lg px-4 py-2 transition;
+  }
+
+  .admin-badge {
+    @apply inline-block px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .admin-badge-success {
+    @apply bg-success/20 text-success;
+  }
+
+  .admin-badge-warning {
+    @apply bg-warning/20 text-warning;
+  }
+
+  .admin-badge-danger {
+    @apply bg-danger/20 text-danger;
   }
 }
 
