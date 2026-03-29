@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+  --color-tea-brown: #4A2C2A;
+  --color-tea-gold: #C89B3C;
+  --color-tea-green: #3FA34D;
+  --color-tea-cream: #F5E6C8;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-tea-cream text-tea-brown;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+.glass {
+  background: rgba(245, 230, 200, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(74, 44, 42, 0.1);
+}
+
+.glass-dark {
+  background: rgba(74, 44, 42, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 155, 60, 0.2);
+}
+
+@keyframes steam {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  20% { opacity: 0.5; }
+  50% { transform: translateY(-20px) translateX(5px) scale(1.2); opacity: 0.3; }
+  100% { transform: translateY(-40px) translateX(-5px) scale(1.5); opacity: 0; }
+}
+
+.steam-particle {
+  animation: steam 3s infinite ease-out;
+}
