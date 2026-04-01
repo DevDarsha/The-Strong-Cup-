@@ -1,5 +1,5 @@
 import { ShoppingCart, Star, Zap, ArrowRight, Check } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Product } from '../types';
 import React, { useState } from 'react';
 
